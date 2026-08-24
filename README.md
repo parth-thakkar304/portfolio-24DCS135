@@ -1,6 +1,6 @@
 # Student Portfolio Application (`portfolio-24DCS135`)
 
-A modern, responsive, single-page student portfolio application developed for the **Advanced Web Development Frameworks** course. Built with **React 19**, **Vite**, and **React Router v7**.
+A modern, responsive, full-stack application developed for the **Advanced Web Development Frameworks** course. Built with **React 19**, **Vite**, **React Router v7**, **Node.js**, **Express**, **Mongoose**, and **MongoDB**.
 
 ---
 
@@ -24,15 +24,27 @@ A modern, responsive, single-page student portfolio application developed for th
 * **Real-Time Filter/Search:** Live search input allowing users to filter repositories dynamically by name or language.
 * **Repo Metadata:** Displays repository name, description, star count, language, forks, and direct GitHub links.
 
+### 📍 Practical 4: Building a RESTful API with Node.js and Express
+* **Express RESTful API:** Implemented full CRUD endpoints (`GET /tasks`, `GET /tasks/:id`, `POST /tasks`, `PUT /tasks/:id`, `DELETE /tasks/:id`).
+* **5-Stage Middleware Pipeline:** CORS middleware, `express.json()` body parser, global request logger middleware (`[TIMESTAMP] METHOD URL`), Content-Type JSON validator, and route task ID validator.
+* **Centralized Error & 404 Handling:** Catch-all route handler for unmapped endpoints and a global error handling middleware `(err, req, res, next)` placed last in the pipeline.
+* **Interactive Frontend Dashboard:** Visual dashboard UI to test CRUD routes, status codes, 404, 500 error handler, and live API response payload inspector.
+
+### 📍 Practical 5: MongoDB Integration and Schema Design with Mongoose
+* **Persistent Database Integration:** Connected Node/Express server to MongoDB using Mongoose ODM (`mongoose.connect()`), replacing temporary in-memory arrays.
+* **Mongoose Schema & Validation:** Created Task Schema (`models/Task.js`) with required field checks, auto-trimming, default values, priority enum restriction (`['low', 'medium', 'high']`), and a pre-save title trim hook.
+* **Environment Configuration (`dotenv`):** Managed database credentials securely using `.env` (gitignored) and provided `.env.example` for public repository reference.
+* **Structured Error Response Mapping:** Centralized error handler returning formatted JSON error payloads for Mongoose `ValidationError` (HTTP 400) and `CastError` (HTTP 404).
+
 ---
 
 ## 🛠️ Tech Stack & Dependencies
 
-* **Frontend Library:** React 19
-* **Build Tool:** Vite
-* **Routing:** `react-router-dom` v7
-* **API:** GitHub REST API (`https://api.github.com`)
-* **Styling:** Vanilla CSS (Glassmorphism design system with Light/Dark mode)
+* **Frontend Library:** React 19, Vite, `react-router-dom` v7
+* **Backend Framework:** Node.js, Express.js
+* **Database & ODM:** MongoDB, Mongoose ODM
+* **Environment Management:** `dotenv`, `cors`
+* **Styling:** Vanilla CSS (Dark luxury theme with shimmer skeleton loading)
 
 ---
 
@@ -44,14 +56,17 @@ A modern, responsive, single-page student portfolio application developed for th
    cd portfolio-24DCS135
    ```
 
-2. **Install dependencies:**
+2. **Start Frontend (React):**
    ```bash
    npm install
-   ```
-
-3. **Start the local development server:**
-   ```bash
    npm run dev
    ```
 
-4. Open `http://localhost:5173` in your browser.
+3. **Start Backend Server (Express + MongoDB):**
+   ```bash
+   cd task-manager-api/backend
+   npm install
+   node server.js
+   ```
+
+4. Open `http://localhost:5173` for Frontend and `http://localhost:5000` for REST API Backend.

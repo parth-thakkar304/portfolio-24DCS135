@@ -1,5 +1,5 @@
 function Header({ name, subtitle, themeColor }) {
-  const headerStyle = themeColor ? { color: themeColor } : {};
+  const headerStyle = themeColor ? { color: themeColor } : {}; 
   
   return (
     <header className="header-section">

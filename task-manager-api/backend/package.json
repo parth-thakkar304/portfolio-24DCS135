@@ -1,0 +1,28 @@
+{
+  "name": "task-manager-backend",
+  "version": "1.0.0",
+  "description": "RESTful API with Node.js, Express, and Middleware Pipeline for Task Management",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "express",
+    "node",
+    "rest-api",
+    "middleware",
+    "crud"
+  ],
+  "author": "Parth Thakkar",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.21.2",
+    "mongoose": "^9.9.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practical 5 - Task Manager API (MongoDB & Mongoose)</title>
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=5">
+</head>
+<body>
+  <div class="dashboard-wrapper">
+    <header class="main-header">
+      <div class="header-content">
+        <h1>Task Manager API (MongoDB & Mongoose)</h1>
+        <p class="subtitle">Practical 5 • Persistent CRUD Operations & Mongoose Schema Validation</p>
+      </div>
+      <div class="server-badge" id="server-status">
+        <span class="status-dot"></span> Checking server & database...
+      </div>
+    </header>
+
+    <div class="grid-layout">
+      <!-- Left Column: Create Task & Quick Middleware Actions -->
+      <div class="left-col">
+        <!-- Create Task Square Block -->
+        <div class="card square-block">
+          <div class="card-title-row">
+            <h2>Create New Task</h2>
+            <span class="badge-endpoint">POST /tasks</span>
+          </div>
+          <form id="create-task-form">
+            <div class="form-group">
+              <label for="task-title">Task Title *</label>
+              <input type="text" id="task-title" placeholder="e.g., Connect Express to MongoDB Atlas" required>
+            </div>
+            <div class="form-group">
+              <label for="task-desc">Description</label>
+              <textarea id="task-desc" placeholder="Details about this task..." rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="task-priority">Priority</label>
+              <select id="task-priority" class="select-input">
+                <option value="low">Low Priority</option>
+                <option value="medium" selected>Medium Priority</option>
+                <option value="high">High Priority</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Save to MongoDB</button>
+          </form>
+        </div>
+
+        <!-- Middleware & Route Testing Tools Square Block -->
+        <div class="card square-block">
+          <h2>Validation & Error Test Tools</h2>
+          <p class="section-desc">Test status codes, 404, 500, and Mongoose Schema validation:</p>
+          <div class="button-group">
+            <button id="btn-test-404" class="btn btn-secondary">Test 404 Route</button>
+            <button id="btn-test-500" class="btn btn-secondary">Test 500 Error</button>
+            <button id="btn-test-bad-json" class="btn btn-secondary">Test Bad Header</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Task List & Response Inspector -->
+      <div class="right-col">
+        <div class="card square-block">
+          <div class="card-header">
+            <div class="card-title-row">
+              <h2>Current Tasks in MongoDB</h2>
+              <span class="badge-endpoint">GET /tasks</span>
+            </div>
+            <button id="btn-refresh" class="btn btn-sm btn-outline">Refresh Database</button>
+          </div>
+          <div id="task-list" class="task-list">
+            <!-- Shimmer Skeletons will appear here during loading -->
+          </div>
+        </div>
+
+        <!-- Live API Response Inspector Square Block -->
+        <div class="card square-block">
+          <div class="card-header">
+            <h2>Live API Response Inspector</h2>
+            <div>
+              <span id="response-timestamp" style="font-size:0.75rem; color:#a1a1aa; margin-right:8px;"></span>
+              <span id="response-status" class="status-pill">Waiting...</span>
+            </div>
+          </div>
+          <div class="console-box">
+            <pre id="json-inspector">// Response payload will reflect here in real time...</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=5"></script>
+</body>
+</html>
