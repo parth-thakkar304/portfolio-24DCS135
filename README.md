@@ -193,6 +193,4 @@ The REST API backend will run on `http://localhost:5000`.
 
 <div align="center">
 
-Developed with ❤️ for **Advanced Web Development Frameworks** Course.
-
 </div>
