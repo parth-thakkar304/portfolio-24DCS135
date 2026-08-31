@@ -1,14 +1,35 @@
 import { useState, useEffect, useCallback } from 'react';
 
 function Projects() {
-  const [repos, setRepos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
   const [username, setUsername] = useState('octocat');
   const [searchInput, setSearchInput] = useState('octocat');
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const fetchRepos = useCallback(async (userToFetch = username) => {
+  // ⚡ Performance Optimization: Initialize from sessionStorage cache for instant render
+  const [repos, setRepos] = useState(() => {
+    const cached = sessionStorage.getItem('github_repos_octocat');
+    return cached ? JSON.parse(cached) : [];
+  });
+  
+  const [loading, setLoading] = useState(() => {
+    const cached = sessionStorage.getItem('github_repos_octocat');
+    return !cached;
+  });
+
+  const [error, setError] = useState(null);
+
+  const fetchRepos = useCallback(async (userToFetch = username, force = false) => {
+    const cacheKey = `github_repos_${userToFetch}`;
+    const cachedData = sessionStorage.getItem(cacheKey);
+
+    // If cached data exists and not forced refresh, show instantly without network delay
+    if (cachedData && !force) {
+      setRepos(JSON.parse(cachedData));
+      setLoading(false);
+      setError(null);
+      return;
+    }
+
     setLoading(true);
     setError(null);
     try {
@@ -25,9 +46,12 @@ function Projects() {
       }
 
       const data = await response.json();
+      sessionStorage.setItem(cacheKey, JSON.stringify(data));
       setRepos(data);
     } catch (err) {
-      setError(err.message || 'An unexpected error occurred while fetching data.');
+      if (!cachedData) {
+        setError(err.message || 'An unexpected error occurred while fetching data.');
+      }
     } finally {
       setLoading(false);
     }
@@ -41,6 +65,7 @@ function Projects() {
     e.preventDefault();
     if (searchInput.trim()) {
       setUsername(searchInput.trim());
+      fetchRepos(searchInput.trim(), true); // Force fetch new user
     }
   };
 
@@ -50,14 +75,14 @@ function Projects() {
   );
 
   return (
-    <section className="projects-container">
+    <section className="projects-container page-transition">
       <div className="projects-header">
         <h1>GitHub Repositories</h1>
         <p>Live REST API integration fetching public repositories directly from GitHub.</p>
       </div>
 
       {/* Control Bar: Change Username & Filter Repositories */}
-      <div className="api-controls-bar glass-panel">
+      <div className="api-controls-bar">
         <form onSubmit={handleUserSearch} className="username-form">
           <label htmlFor="github-user-input">GitHub User:</label>
           <div className="input-with-button">
@@ -84,14 +109,14 @@ function Projects() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by repo name or language..."
-            disabled={loading || !!error}
+            disabled={loading && repos.length === 0}
           />
         </div>
       </div>
 
       {/* Conditional Rendering: Loading State */}
-      {loading && (
-        <div className="loading-state-card glass-panel">
+      {loading && repos.length === 0 && (
+        <div className="loading-state-card card-panel">
           <div className="spinner"></div>
           <p>Fetching repositories for <strong>"{username}"</strong> from GitHub API...</p>
         </div>
@@ -99,12 +124,12 @@ function Projects() {
 
       {/* Conditional Rendering: Error State */}
       {!loading && error && (
-        <div className="error-state-card glass-panel">
+        <div className="error-state-card card-panel">
           <h3>Failed to Load Data</h3>
           <p className="error-message">{error}</p>
           <button 
             type="button" 
-            onClick={() => fetchRepos(username)} 
+            onClick={() => fetchRepos(username, true)} 
             className="retry-btn"
           >
             Retry Request
@@ -113,25 +138,25 @@ function Projects() {
       )}
 
       {/* Conditional Rendering: Success / Data State */}
-      {!loading && !error && (
+      {(!loading || repos.length > 0) && !error && (
         <>
           <div className="results-summary">
             Showing {filteredRepos.length} of {repos.length} repositories for <strong>@{username}</strong>
           </div>
 
           {filteredRepos.length === 0 ? (
-            <div className="empty-state-card glass-panel">
+            <div className="empty-state-card card-panel">
               <p>No repositories found matching "<strong>{searchTerm}</strong>".</p>
             </div>
           ) : (
             <div className="projects-grid">
               {filteredRepos.map((repo) => (
-                <div key={repo.id} className="project-card glass-panel">
+                <div key={repo.id} className="project-card">
                   <div className="card-top-row">
                     <h3>{repo.name}</h3>
                     {repo.stargazers_count !== undefined && (
                       <span className="star-badge" title="Stars">
-                        Stars: {repo.stargazers_count}
+                        ★ {repo.stargazers_count}
                       </span>
                     )}
                   </div>

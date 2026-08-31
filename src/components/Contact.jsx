@@ -19,7 +19,7 @@ function Contact() {
   };
 
   return (
-    <section className="contact-container glass-panel">
+    <section className="contact-container page-transition">
       <div className="contact-header">
         <h1>Contact Me</h1>
         <p>Feel free to reach out. I will get back to you as soon as possible.</p>

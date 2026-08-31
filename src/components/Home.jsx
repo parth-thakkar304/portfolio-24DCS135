@@ -4,7 +4,7 @@ import Skills from "./Skills";
 
 function Home({ name, subtitle, themeColor, skills }) {
   return (
-    <div className="home-container">
+    <div className="home-container page-transition">
       <Header name={name} subtitle={subtitle} themeColor={themeColor} />
       <About />
       <Skills skillList={skills} />
