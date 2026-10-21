@@ -14,10 +14,10 @@ jobs:
       - name: 1. Checkout Repository
         uses: actions/checkout@v4
 
-      - name: 2. Set up Node.js 18 Environment
+      - name: 2. Set up Node.js 20 Environment
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: 3. Install Dependencies
         run: npm install
